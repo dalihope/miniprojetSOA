@@ -1,0 +1,157 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:rgb(255, 255, 255);">Printing Operation Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+       <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+             <a class="nav-link" (click)="onOpenModal(null, 'add')">Add Printing Operation <span class="sr-only">(current)</span></a>
+          </li>
+       </ul>
+       <form class="form-inline my-2 my-lg-0">
+          <input type="search" (ngModelChange)="searchPrintingOperations(key.value)" #key="ngModel" ngModel
+           name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search printingOperations..." required>
+       </form>
+    </div>
+  </nav>
+  <div class="container" id="main-container">
+  <div class="row">
+    <div *ngFor="let printingOperation of printingOperations" class="col-md-6 col-xl-3">
+       <div class="card m-b-30">
+          <div class="card-body row">
+             <div class="col-6">
+                <a href=""><img src="{{printingOperation?.fileUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+             </div>
+             <div class="col-6 card-title align-self-center mb-0">
+                <h5>{{printingOperation?.teacher_id}}</h5>
+
+             </div>
+          </div>
+          <ul class="list-group list-group-flush">
+             <li class="list-group-item"><i ></i>{{printingOperation?.numberofCopy}}</li>
+             <li class="list-group-item"><i class="fa fa-phone float-right"></i>Printing Agent : {{printingOperation?.printingAgent_id}}</li>
+          </ul>
+          <div class="card-body">
+             <div class="float-right btn-group btn-group-sm">
+                <a (click)="onOpenModal(printingOperation, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                <a (click)="onOpenModal(printingOperation, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+
+  <!-- Add PrintingOperation Modal -->
+  <div class="modal fade" id="addPrintingOperationModal" tabindex="-1" role="dialog" aria-labelledby="addPrintingOperationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addPrintingOperationModalLabel">Add PrintingOperation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)">
+            <div class="form-group">
+               <label for="name">FileUrl</label>
+               <input type="file" ngModel name="file" class="form-control" id="fileUrl" placeholder="File" required>
+            </div>
+            <div class="form-group">
+               <label for="email">Teacher</label>
+               <input type="email" ngModel name="teacher_id" class="form-control" id="teacher_id" placeholder="teacher" required>
+            </div>
+
+            <div class="form-group">
+               <label for="phone">number Of Copy</label>
+               <input type="text" ngModel name="numberofCopy" class="form-control" id="numberofCopy" placeholder="number of Copy" required>
+            </div>
+            <div class="form-group">
+               <label for="phone">Printing Agent</label>
+               <input type="text" ngModel name="printingAgent_id" class="form-control" id="printingAgent_id" placeholder="Printing Agent" required>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-printingOperation-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="updatePrintingOperationModal" tabindex="-1" role="dialog" aria-labelledby="printingOperationEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="updatePrintingOperationModalLabel">Edit PrintingOperation {{editPrintingOperation?.id}}</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form #editForm="ngForm">
+                <div class="form-group">
+                   <label for="name">Teacher</label>
+                   <input type="text" ngModel="{{editPrintingOperation?.teacher_id}}" name="teacher_id" class="form-control" id="teacher_id" aria-describedby="emailHelp" placeholder="teacher">
+                </div>
+                <input type="hidden" ngModel="{{editPrintingOperation?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+
+                <div class="form-group">
+                   <label for="email">File Url</label>
+                   <input type="file" ngModel="{{editPrintingOperation?.fileUrl}}" name="fileUrl" class="form-control" id="fileUrl" placeholder="fileUrl">
+                </div>
+
+
+                <div class="form-group">
+                   <label for="phone">Printing Agent</label>
+                   <input type="text" ngModel="{{editPrintingOperation?.printingAgent_id}}" name="printingAgent_id" class="form-control" id="printingAgent_id"  placeholder="Printing Agent">
+                </div>
+
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deletePrintingOperationModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete PrintingOperation</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Are you sure you want to delete printingOperation {{deletePrintingOperation?.id}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button (click)="onDeletePrintingOperation(deletePrintingOperation?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Notification for no printingOperations -->
+  <div *ngIf="printingOperations?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NO Operations!</h4>
+    <p>No PrintingOperations were found.</p>
+  </div>
+  </div>
+
+<style>
+  .bg-dark{
+    background-color:blue
+  }
+</style>
